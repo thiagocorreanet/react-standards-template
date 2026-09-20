@@ -53,6 +53,7 @@ const entries = [
   ".claude",
   ".github",
   ".gitignore",
+  ".gitattributes",
   ".env.example",
   ".env.mock",
   ".node-version",

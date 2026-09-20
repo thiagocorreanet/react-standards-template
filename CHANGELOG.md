@@ -31,6 +31,8 @@
 - `.github/` ganhou guia de contribuição, modelo de PR e formulários de issue.
 - O gerador passa a instalar as dependências também no Windows: `pnpm` lá é um
   `.cmd`, que o Node recusa executar sem shell, e a falha era silenciosa.
+- `.gitattributes` fixa LF no clone, inclusive onde o git usa
+  `core.autocrlf=true`, e vai junto nas cópias geradas.
 
 ## 0.1.0 — 2026-09-20
 
