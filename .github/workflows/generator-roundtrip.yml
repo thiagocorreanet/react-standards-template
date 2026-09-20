@@ -34,10 +34,9 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
-    # O gerador chama `pnpm` e `git` por execFileSync, o que é onde Windows
-    # costuma divergir. O resultado é reportado sem travar a PR até que o
-    # suporte seja confirmado; para exigir, apague esta linha.
-    continue-on-error: ${{ matrix.os == 'windows-latest' }}
+    # Windows é cobrado como os demais. Foi ele que achou a instalação que
+    # falhava em silêncio, porque `pnpm` lá é um `.cmd`, e o CRLF do clone.
+    # As duas voltam sem ninguém perceber se ninguém cobrar.
     runs-on: ${{ matrix.os }}
     timeout-minutes: 25
     steps:

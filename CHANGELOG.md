@@ -25,7 +25,7 @@
   PR só mexe em texto, roda lint, tipos, testes e build separados da jornada
   no navegador, cacheia o Chromium e resume tudo no check `verify`.
 - `Generator round trip`: gera um projeto de verdade, instala e roda as
-  conferências dentro dele. Windows é reportado, ainda não exigido.
+  conferências dentro dele, no Linux e no Windows.
 - `Node next compatibility`: roda a suíte na versão mais recente do Node toda
   segunda, para a próxima LTS não chegar de surpresa.
 - `.github/` ganhou guia de contribuição, modelo de PR e formulários de issue.
