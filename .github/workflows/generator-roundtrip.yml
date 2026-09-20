@@ -10,6 +10,9 @@ on:
       - "scripts/**"
       - "package.json"
       - "pnpm-lock.yaml"
+      # Manda em como o pnpm instala e viaja junto nas cópias; mudar aqui
+      # muda o projeto gerado tanto quanto mexer no gerador.
+      - "pnpm-workspace.yaml"
       - "index.html"
       - "src/config/app.ts"
       - ".node-version"
