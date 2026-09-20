@@ -33,6 +33,12 @@
   `.cmd`, que o Node recusa executar sem shell, e a falha era silenciosa.
 - `.gitattributes` fixa LF no clone, inclusive onde o git usa
   `core.autocrlf=true`, e vai junto nas cópias geradas.
+- Segurança: `SECURITY.md` na raiz, fora da lista que o gerador copia;
+  `.github/dependabot.yml` para npm e para as próprias actions; workflow do
+  CodeQL, que se recolhe onde o repositório não é público; `pnpm audit` como
+  passo do `Quality`; e `minimumReleaseAge` de um dia no pnpm.
+- Toda action dos workflows presa por SHA de commit, com a versão em
+  comentário, em vez de tag móvel.
 
 ## 0.1.0 — 2026-09-20
 

@@ -24,7 +24,7 @@ jobs:
     outputs:
       code: ${{ steps.filter.outputs.code }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           # O merge-base precisa do histórico, mas não do conteúdo antigo de
           # cada arquivo; `blob:none` busca os poucos blobs usados na hora.
@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
       - run: node .github/scripts/check-markdown-links.mjs
@@ -60,7 +60,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
       - uses: ./.github/actions/install-node-dependencies
@@ -75,6 +75,12 @@ jobs:
       - name: Build, sem simulação
         run: pnpm build
 
+      # Os alertas do Dependabot avisam depois do merge; este passo recusa a
+      # dependência vulnerável antes. `high` e acima trava; abaixo disso a
+      # decisão fica com a PR do Dependabot, que chega com contexto.
+      - name: Auditoria das dependências
+        run: pnpm audit --audit-level=high
+
   # Em job separado para correr junto com o anterior, em vez de esperar o
   # build: é o mais demorado dos dois.
   e2e:
@@ -84,7 +90,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
       - uses: ./.github/actions/install-node-dependencies
@@ -94,7 +100,7 @@ jobs:
         run: echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
 
       - id: browser-cache
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
@@ -111,7 +117,7 @@ jobs:
 
       - run: pnpm test:e2e
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: failure()
         with:
           name: browser-test-results
