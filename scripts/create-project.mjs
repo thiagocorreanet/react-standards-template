@@ -53,12 +53,14 @@ const entries = [
   ".claude",
   ".github",
   ".gitignore",
+  ".gitattributes",
   ".env.example",
   ".env.mock",
   ".node-version",
   ".mcp.json",
   "CLAUDE.md",
   "README.md",
+  "README.en.md",
   "CHANGELOG.md",
   "package.json",
   "pnpm-lock.yaml",
@@ -116,6 +118,11 @@ if (options.install) {
     execFileSync("pnpm", ["install", "--frozen-lockfile"], {
       cwd: canonicalTarget,
       stdio: "inherit",
+      // No Windows o `pnpm` é um `.cmd`, e o Node recusa executar `.cmd` sem
+      // shell desde a correção do CVE-2024-27980. Sem isto a instalação falha
+      // em silêncio lá e o projeto nasce sem `node_modules`. Os argumentos
+      // são literais; nada aqui vem de quem chamou o comando.
+      shell: process.platform === "win32",
     })
     done.push("dependências instaladas")
   } catch {

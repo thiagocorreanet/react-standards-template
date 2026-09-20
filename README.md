@@ -1,5 +1,7 @@
 # React App Template
 
+<sub><a href="README.en.md">English</a></sub>
+
 Base reutilizável para sistemas internos com React e API separada. Inclui uma jornada funcional de sessão e CRUD, layout responsivo, tema claro/escuro/sistema, pesquisa e paginação na URL, validação de contratos e testes de integração e navegador.
 
 ## Rodar a demonstração
@@ -99,7 +101,7 @@ pnpm exec playwright install chromium
 pnpm test:e2e
 ```
 
-`verify` executa Biome, TypeScript, testes, verificação do gerador e build. O build verifica também a exclusão dos mocks. Os testes MSW atravessam os serviços HTTP e as regras simuladas; Playwright verifica a jornada no navegador. A configuração de CI executa os dois grupos.
+`verify` executa Biome, TypeScript, testes, verificação do gerador e build. O build verifica também a exclusão dos mocks. Os testes MSW atravessam os serviços HTTP e as regras simuladas; Playwright verifica a jornada no navegador. O CI executa os dois grupos, pula os jobs de código quando a mudança é só de texto e gera um projeto do zero para conferir o gerador; o que cada workflow cobra está em [`.github/CONTRIBUTING.md`](.github/CONTRIBUTING.md).
 
 ## Publicar
 

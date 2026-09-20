@@ -1,0 +1,85 @@
+name: Generator round trip
+
+# `pnpm test:generator` testa o script; isto testa o resultado. Gera um
+# projeto de verdade, instala e roda as conferências dentro dele. É o que
+# separa "o gerador rodou" de "o projeto gerado funciona", e num template a
+# segunda coisa é a que importa.
+on:
+  pull_request:
+    paths: &roundtrip-paths
+      - "scripts/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "index.html"
+      - "src/config/app.ts"
+      - ".node-version"
+      - ".github/actions/install-node-dependencies/action.yml"
+      - ".github/workflows/generator-roundtrip.yml"
+  push:
+    branches: [main]
+    paths: *roundtrip-paths
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: generator-roundtrip-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  roundtrip:
+    name: gerar e conferir o projeto (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    # Windows é cobrado como os demais. Foi ele que achou a instalação que
+    # falhava em silêncio, porque `pnpm` lá é um `.cmd`, e o CRLF do clone.
+    # As duas voltam sem ninguém perceber se ninguém cobrar.
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/install-node-dependencies
+
+      # O gerador engole a falha do `pnpm install` e do `git`, e só avisa no
+      # texto final. Quem cobra de verdade são os comandos abaixo, rodados
+      # dentro do projeto gerado.
+      - name: Gerar um projeto fora da pasta do template
+        shell: bash
+        env:
+          GIT_AUTHOR_NAME: Template
+          GIT_AUTHOR_EMAIL: template@example.com
+          GIT_COMMITTER_NAME: Template
+          GIT_COMMITTER_EMAIL: template@example.com
+        run: |
+          set -euo pipefail
+          node scripts/create-project.mjs "$RUNNER_TEMP/generated-app" \
+            --name generated-app --title "App Gerado"
+
+      - name: O projeto gerado tem um commit inicial
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/generated-app"
+          test "$(git rev-list --count HEAD)" = "1"
+          git ls-files --error-unmatch CLAUDE.md docs/standards.md .mcp.json \
+            .claude/skills/app-review-standards/SKILL.md > /dev/null
+
+      - name: Conferir o projeto gerado
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/generated-app"
+          pnpm check
+          pnpm typecheck
+          pnpm test
+          pnpm build
+
+      - name: Links do Markdown no projeto gerado
+        shell: bash
+        run: node .github/scripts/check-markdown-links.mjs "$RUNNER_TEMP/generated-app"
