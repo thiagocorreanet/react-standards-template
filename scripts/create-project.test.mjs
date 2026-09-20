@@ -96,7 +96,15 @@ test("inicia o git com um primeiro commit", async () => {
     )
     assert.equal(tracked.trim().split("\n").length, 2)
   } finally {
-    await rm(temporary, { recursive: true, force: true })
+    // Logo depois do commit o git ainda pode estar escrevendo em
+    // `.git/objects`, e o `rm` do Node só repete em ENOTEMPTY no Windows.
+    // Sem repetição aqui, a limpeza derruba um teste que passou.
+    await rm(temporary, {
+      recursive: true,
+      force: true,
+      maxRetries: 5,
+      retryDelay: 100,
+    })
   }
 })
 

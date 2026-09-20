@@ -29,6 +29,8 @@
 - `Node next compatibility`: roda a suíte na versão mais recente do Node toda
   segunda, para a próxima LTS não chegar de surpresa.
 - `.github/` ganhou guia de contribuição, modelo de PR e formulários de issue.
+- O gerador passa a instalar as dependências também no Windows: `pnpm` lá é um
+  `.cmd`, que o Node recusa executar sem shell, e a falha era silenciosa.
 
 ## 0.1.0 — 2026-09-20
 
