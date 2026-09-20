@@ -59,6 +59,7 @@ const entries = [
   ".mcp.json",
   "CLAUDE.md",
   "README.md",
+  "README.en.md",
   "CHANGELOG.md",
   "package.json",
   "pnpm-lock.yaml",

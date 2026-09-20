@@ -20,6 +20,15 @@
 - O gerador virou o comando global `criar-app`, registrado por um symlink em
   `~/.local/bin`, e passou a instalar as dependências e iniciar o git com o
   primeiro commit. `--no-install` e `--no-git` desligam cada passo.
+- `README.en.md`, descrição do projeto em inglês, incluída nas cópias geradas.
+- CI dividido: `Quality` classifica o diff e pula os jobs de código quando a
+  PR só mexe em texto, roda lint, tipos, testes e build separados da jornada
+  no navegador, cacheia o Chromium e resume tudo no check `verify`.
+- `Generator round trip`: gera um projeto de verdade, instala e roda as
+  conferências dentro dele. Windows é reportado, ainda não exigido.
+- `Node next compatibility`: roda a suíte na versão mais recente do Node toda
+  segunda, para a próxima LTS não chegar de surpresa.
+- `.github/` ganhou guia de contribuição, modelo de PR e formulários de issue.
 
 ## 0.1.0 — 2026-09-20
 
