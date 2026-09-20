@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.tanstack/
+.env*
+!.env.example
+!.env.mock
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
+.DS_Store
+.claude/settings.local.json
