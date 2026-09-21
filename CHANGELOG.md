@@ -36,7 +36,8 @@
 - Segurança: `SECURITY.md` na raiz, fora da lista que o gerador copia;
   `.github/dependabot.yml` para npm e para as próprias actions; workflow do
   CodeQL, que se recolhe onde o repositório não é público; `pnpm audit` como
-  passo do `Quality`; e `minimumReleaseAge` de um dia no pnpm.
+  passo do `Quality`; e `minimumReleaseAge` de um dia no pnpm, sem o modo
+  estrito, que impediria o Dependabot de atualizar qualquer pacote.
 - Toda action dos workflows presa por SHA de commit, com a versão em
   comentário, em vez de tag móvel.
 
